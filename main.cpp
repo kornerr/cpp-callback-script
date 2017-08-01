@@ -1,26 +1,30 @@
 
 #include "Environment.h"
 
-#include "cpp/module.h"
+#include "cpp/module-one.h"
+#include "cpp/module-two.h"
 
 Environment *env = 0;
 
-void runCPPModule(Environment *env)
+void runCPPModules(Environment *env)
 {
-    // Register custom provider.
-    ModuleProvider *mp = new ModuleProvider;
-    env->addProvider(mp);
+    // Register the first custom provider.
+    ModuleOne *one = new ModuleOne(env);
+    env->addModule(mp);
+
+    // Work with module-one through Environment interface.
+    
     // Try to set invalid (unregistered) key.
     env->set("invalidKey", {"value1", "value2"});
-    // See current values for 'cpp' key.
-    printf("main. 01.cpp values: '%s'\n", stringsToString(env->get("cpp")).c_str());
+    // See current values for 'one' key.
+    printf("main. one values before: '%s'\n", stringsToString(env->get("one")).c_str());
     // Set new values for 'cpp' key.
-    env->set("cpp", {"value1", "value2"});
+    env->set("one", {"value1", "value2"});
     // See new values for 'cpp' key.
-    printf("main. 02.cpp values: '%s'\n", stringsToString(env->get("cpp")).c_str());
+    printf("main. one values after: '%s'\n", stringsToString(env->get("one")).c_str());
 
-    // Remove custom provider.
-    delete mp;
+    // Remove the first custom provider.
+    delete one;
 }
 
 int main()
