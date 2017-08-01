@@ -10,7 +10,10 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/app)
 # Chai.
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/../ChaiScript/include)
 
+# Sol2.
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/../sol2)
+
 ADD_EXECUTABLE(cpp-callback-script main.cpp)
 
-TARGET_LINK_LIBRARIES(cpp-callback-script dl pthread)
+TARGET_LINK_LIBRARIES(cpp-callback-script dl pthread lua)
 

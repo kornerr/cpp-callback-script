@@ -9,6 +9,9 @@
 // Chai.
 #include <chaiscript/chaiscript.hpp>
 
+// Sol2.
+#include <sol.hpp>
+
 Environment *env = 0;
 
 void runChai(Environment *env, const char *fileName)
@@ -52,6 +55,16 @@ void runCPP(Environment *env)
     */
 }
 
+void runSol(Environment *env)
+{
+    sol::state lua;
+    int x = 0;
+    lua.set_function("beep", [&x]{ ++x; });
+    lua.script("beep()");
+    printf("x: '%d'\n", x);
+
+}
+
 int main(int argc, char *argv[])
 {
     if (argc != 2)
@@ -64,7 +77,8 @@ int main(int argc, char *argv[])
     Environment env;
 
     runCPP(&env);
-    runChai(&env, fileName);
+    //runChai(&env, fileName);
+    runSol(&env);
 
     return 0;
 }
