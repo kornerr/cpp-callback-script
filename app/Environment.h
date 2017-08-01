@@ -2,46 +2,34 @@
 #ifndef CPP_CALLBACK_SCRIPT_ENVIRONMENT_H
 #define CPP_CALLBACK_SCRIPT_ENVIRONMENT_H
 
-#include "EnvironmentProvider.h"
-
-#include <map>
+#include "EnvironmentClient.h"
 
 class Environment
 {
     public:
         Environment() { }
-        ~Environment() { }
 
-        void addProvider(EnvironmentProvider *provider)
+        void addClient(EnvironmentClient *client)
         {
-            this->providers.push_back(provider);
+            this->clients.push_back(client);
         }
 
-        Strings get(const String &key)
+        Strings call(const String &key, const Strings &values)
         {
-            for (auto provider : this->providers)
+            for (auto client : this->clients)
             {
-                if (provider->hasGetter(key))
+                if (client->respondsToKey(key))
                 {
-                    return provider->get(key);
+                    return client->call(key, values);
                 }
             }
+            printf("No one found to respond to key '%s'", key.c_str());
             Strings stub;
             return stub;
         }
-        void set(const String &key, const Strings &values)
-        {
-            for (auto provider : this->providers)
-            {
-                if (provider->hasSetter(key))
-                {
-                    provider->set(key, values);
-                }
-            }
-        }
 
     private:
-        std::vector<EnvironmentProvider *> providers;
+        std::vector<EnvironmentClient *> clients;
 };
 
 #endif // CPP_CALLBACK_SCRIPT_ENVIRONMENT_H
