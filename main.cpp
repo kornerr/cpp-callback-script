@@ -55,30 +55,37 @@ void runCPP(Environment *env)
     */
 }
 
-void runSol(Environment *env)
+void runSol(Environment *env, const char *fileName)
 {
     sol::state lua;
-    int x = 0;
-    lua.set_function("beep", [&x]{ ++x; });
-    lua.script("beep()");
-    printf("x: '%d'\n", x);
 
+    // Register environment instance.
+    lua["env"] = env;
+    // Register environment class.
+    lua.new_usertype<Environment>(
+        "Environment",
+        "addClient", &Environment::addClient,
+        "call", &Environment::call
+    );
+    // Load and execute script.
+    lua.script_file(fileName);
 }
 
 int main(int argc, char *argv[])
 {
-    if (argc != 2)
+    if (argc != 3)
     {
-        printf("%s /path/to/script.chai\n", argv[0]);
+        printf("%s /path/to/script.chai /path/to/script.lua\n", argv[0]);
         return 1;
     }
-    const char *fileName = argv[1];
+    const char *fileNameChai = argv[1];
+    const char *fileNameLua = argv[2];
 
     Environment env;
 
     runCPP(&env);
-    //runChai(&env, fileName);
-    runSol(&env);
+    //runChai(&env, fileNameChai);
+    runSol(&env, fileNameLua);
 
     return 0;
 }
