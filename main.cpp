@@ -9,9 +9,6 @@
 // Chai.
 #include <chaiscript/chaiscript.hpp>
 
-// Sol2.
-#include <sol.hpp>
-
 Environment *env = 0;
 
 void runChai(Environment *env, const char *fileName)
@@ -54,6 +51,9 @@ void runCPP(Environment *env)
     delete proxy;
     */
 }
+
+// Sol2.
+#include <sol.hpp>
 
 void runSol(Environment *env, const char *fileName)
 {
