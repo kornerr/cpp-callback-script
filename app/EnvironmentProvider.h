@@ -18,9 +18,20 @@ class EnvironmentProvider
             printf("EnvironmentProvider.destructor\n");
         }
 
+        virtual bool hasGetter(const String &key)
+        {
+            printf("EnvironmentProvider.hasGetter(%s)\n", key.c_str());
+            return false;
+        }
         virtual Strings get(const String &key)
         {
             printf("EnvironmentProvider.get(%s)\n", key.c_str());
+        }
+
+        virtual bool hasSetter(const String &key)
+        {
+            printf("EnvironmentProvider.hasSetter(%s)\n", key.c_str());
+            return false;
         }
         virtual void set(const String &key, const Strings &values)
         {

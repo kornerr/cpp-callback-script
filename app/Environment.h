@@ -2,7 +2,6 @@
 #ifndef CPP_CALLBACK_SCRIPT_ENVIRONMENT_H
 #define CPP_CALLBACK_SCRIPT_ENVIRONMENT_H
 
-#include "EnvironmentListener.h"
 #include "EnvironmentProvider.h"
 
 #include <map>
@@ -13,34 +12,38 @@ class Environment
         Environment() { }
         ~Environment() { }
 
-        void addListener(const String &key, EnvironmentListener *listener)
+        void addProvider(const String &key, EnvironmentProvider *provider)
         {
-            this->listeners.insert(
-                std::pair<String, EnvironmentListener *>(key, listener));
+            this->providers.insert(
+                std::pair<String, EnvironmentProvider *>(key, provider));
         }
 
         Strings get(const String &key)
         {
+            for (auto it : this->providers)
+            {
+                if (it.second->hasGetter(key))
+                {
+                    return it.second->get(key);
+                }
+            }
             Strings stub;
-            // TODO
             return stub;
         }
-        //void report(const String &key, const Strings &values);
         void set(const String &key, const Strings &values)
         {
-            // TODO
-
-        }
-        void setProvider(const String &key, EnvironmentProvider *provider)
-        {
-            // TODO
-
+            for (auto it : this->providers)
+            {
+                if (it.second->hasSetter(key))
+                {
+                    it.second->set(key, values);
+                }
+            }
         }
 
     private:
-        std::map<String, EnvironmentListener *> listeners;
-        std::map<String, EnvironmentProvider *> providers;
-
+        typedef std::map<String, EnvironmentProvider *> Providers;
+        Providers providers;
 };
 
 #endif // CPP_CALLBACK_SCRIPT_ENVIRONMENT_H
