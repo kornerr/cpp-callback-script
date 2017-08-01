@@ -9,36 +9,26 @@
 class EnvironmentProvider
 {
     public:
-        EnvironmentProvider()
-        {
-            printf("EnvironmentProvider.constructor\n");
-        }
-        virtual ~EnvironmentProvider()
-        {
-            printf("EnvironmentProvider.destructor\n");
-        }
+        EnvironmentProvider() { }
+        virtual ~EnvironmentProvider() { }
 
         virtual bool hasGetter(const String &key)
         {
-            printf("EnvironmentProvider.hasGetter(%s)\n", key.c_str());
             return false;
         }
         virtual Strings get(const String &key)
         {
-            printf("EnvironmentProvider.get(%s)\n", key.c_str());
+            Strings stub;
+            return stub;
         }
 
         virtual bool hasSetter(const String &key)
         {
-            printf("EnvironmentProvider.hasSetter(%s)\n", key.c_str());
             return false;
         }
         virtual void set(const String &key, const Strings &values)
         {
-            printf(
-                "EnvironmentProvider.set(%s, %s)\n",
-                key.c_str(),
-                stringsToString(values).c_str());
+            // Do nothing.
         }
 };
 

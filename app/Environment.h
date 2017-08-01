@@ -12,19 +12,18 @@ class Environment
         Environment() { }
         ~Environment() { }
 
-        void addProvider(const String &key, EnvironmentProvider *provider)
+        void addProvider(EnvironmentProvider *provider)
         {
-            this->providers.insert(
-                std::pair<String, EnvironmentProvider *>(key, provider));
+            this->providers.push_back(provider);
         }
 
         Strings get(const String &key)
         {
-            for (auto it : this->providers)
+            for (auto provider : this->providers)
             {
-                if (it.second->hasGetter(key))
+                if (provider->hasGetter(key))
                 {
-                    return it.second->get(key);
+                    return provider->get(key);
                 }
             }
             Strings stub;
@@ -32,18 +31,17 @@ class Environment
         }
         void set(const String &key, const Strings &values)
         {
-            for (auto it : this->providers)
+            for (auto provider : this->providers)
             {
-                if (it.second->hasSetter(key))
+                if (provider->hasSetter(key))
                 {
-                    it.second->set(key, values);
+                    provider->set(key, values);
                 }
             }
         }
 
     private:
-        typedef std::map<String, EnvironmentProvider *> Providers;
-        Providers providers;
+        std::vector<EnvironmentProvider *> providers;
 };
 
 #endif // CPP_CALLBACK_SCRIPT_ENVIRONMENT_H

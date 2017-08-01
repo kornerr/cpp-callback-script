@@ -10,7 +10,7 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/app)
 # Reference ChaiScript includes.
 #INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/../ChaiScript/include)
 
-ADD_EXECUTABLE(cpp-callback-script app/main.cpp)
+ADD_EXECUTABLE(cpp-callback-script main.cpp)
 #TARGET_LINK_LIBRARIES(researchChaiScript dl pthread)
 
 #ADD_EXECUTABLE(factory factory.cpp)
