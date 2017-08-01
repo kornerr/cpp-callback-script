@@ -15,6 +15,7 @@ class Module : public EnvironmentClient
         }
         virtual Strings call(const String &key, const Strings &values)
         {
+            printf("Module.call\n");
             return values;
         }
 };
