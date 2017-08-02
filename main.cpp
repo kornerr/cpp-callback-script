@@ -84,7 +84,8 @@ void runSol(Environment *env, const char *fileName)
         [](EnvironmentClient &ec, const String &key, sol::nested<Strings> values)
         {
             return ec.call(key, values);
-        }
+        },
+        "setCallbackRespondsToKey", &EnvironmentClient::setCallbackRespondsToKey
     );
     // Load and execute script.
     lua.script_file(fileName);

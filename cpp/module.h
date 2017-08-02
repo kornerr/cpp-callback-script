@@ -7,7 +7,7 @@
 class Module : public EnvironmentClient
 {
     public:
-        Module() { }
+        Module() : EnvironmentClient() { }
 
         bool respondsToKey(const String &key) override
         {

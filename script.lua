@@ -6,11 +6,12 @@ env:print(values)
 -- Register new module.
 ec = EnvironmentClient.new()
 
----- Try to override respondsToKey method for ec instance.
---function ec:respondsToKey(key)
---    env:print({"ec.respondsToKey", key})
---    return false
---end
+-- Provider respondsToKey method of ec instance with callback.
+function customRespondsToKey(key)
+    env:print({"ec.respondsToKey", key})
+    return false
+end
+ec:setCallbackRespondsToKey(customRespondsToKey)
 
 -- Add ec as Environment client.
 env:addClient(ec)

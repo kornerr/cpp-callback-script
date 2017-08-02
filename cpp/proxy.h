@@ -7,7 +7,7 @@
 class Proxy : public EnvironmentClient
 {
     public:
-        Proxy(Environment *env) : environment(env) { }
+        Proxy(Environment *env) : EnvironmentClient(), environment(env) { }
 
         bool respondsToKey(const String &key) override
         {

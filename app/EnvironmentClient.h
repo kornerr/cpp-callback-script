@@ -5,15 +5,23 @@
 #include "Common.h"
 
 #include <cstdio>
+#include <functional>
+
 
 class EnvironmentClient
 {
     public:
-        EnvironmentClient() { }
+        typedef std::function<bool(const String &)> CallbackRespondsToKey;
+
+        EnvironmentClient() : callbackRespondsToKey(nullptr) { }
         virtual ~EnvironmentClient() { }
 
         virtual bool respondsToKey(const String &key)
         {
+            if (this->callbackRespondsToKey)
+            {
+                return this->callbackRespondsToKey(key);
+            }
             printf("EnvironmentClient.respondsToKey(%s). override me!\n", key.c_str());
             return false;
         }
@@ -26,6 +34,14 @@ class EnvironmentClient
             Strings stub;
             return stub;
         }
+
+        void setCallbackRespondsToKey(CallbackRespondsToKey callback)
+        {
+            this->callbackRespondsToKey = callback;
+        }
+
+    private:
+        CallbackRespondsToKey callbackRespondsToKey;
 };
 
 #endif // CPP_CALLBACK_SCRIPT_ENVIRONMENT_CLIENT_H
