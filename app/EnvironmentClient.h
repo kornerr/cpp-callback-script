@@ -11,9 +11,17 @@
 class EnvironmentClient
 {
     public:
-        typedef std::function<bool(const String &)> CallbackRespondsToKey;
+        // Callback for 'respondsToKey' method.
+        typedef std::function<bool (const String &)> CallbackRespondsToKey;
+        CallbackRespondsToKey callbackRespondsToKey;
 
-        EnvironmentClient() : callbackRespondsToKey(nullptr) { }
+        // Callback for 'call' method.
+        typedef std::function<Strings (const String &, const Strings &)> CallbackCall;
+        CallbackCall callbackCall;
+
+        EnvironmentClient() :
+            callbackRespondsToKey(nullptr),
+            callbackCall(nullptr) { }
         virtual ~EnvironmentClient() { }
 
         virtual bool respondsToKey(const String &key)
@@ -22,26 +30,22 @@ class EnvironmentClient
             {
                 return this->callbackRespondsToKey(key);
             }
-            printf("EnvironmentClient.respondsToKey(%s). override me!\n", key.c_str());
+            printf("EnvironmentClient.respondsToKey(%s). provide callback!\n", key.c_str());
             return false;
         }
         virtual Strings call(const String &key, const Strings &values)
         {
+            if (this->callbackCall)
+            {
+                return this->callbackCall(key, values);
+            }
             printf(
-                "EnvironmentClient.call(%s, %s). override me!\n",
+                "EnvironmentClient.call(%s, %s). provide callback!\n",
                 key.c_str(),
                 stringsToString(values).c_str());
             Strings stub;
             return stub;
         }
-
-        void setCallbackRespondsToKey(CallbackRespondsToKey callback)
-        {
-            this->callbackRespondsToKey = callback;
-        }
-
-    private:
-        CallbackRespondsToKey callbackRespondsToKey;
 };
 
 #endif // CPP_CALLBACK_SCRIPT_ENVIRONMENT_CLIENT_H

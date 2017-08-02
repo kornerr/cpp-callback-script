@@ -85,7 +85,8 @@ void runSol(Environment *env, const char *fileName)
         {
             return ec.call(key, values);
         },
-        "setCallbackRespondsToKey", &EnvironmentClient::setCallbackRespondsToKey
+        "callbackCall", &EnvironmentClient::callbackCall,
+        "callbackRespondsToKey", &EnvironmentClient::callbackRespondsToKey
     );
     // Load and execute script.
     lua.script_file(fileName);

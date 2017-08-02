@@ -3,15 +3,24 @@
 values = env:call("proxy", {"One", "Two"})
 env:print(values)
 
--- Register new module.
+-- Register new module that responds to 'lua' key.
 ec = EnvironmentClient.new()
 
--- Provider respondsToKey method of ec instance with callback.
-function customRespondsToKey(key)
-    env:print({"ec.respondsToKey", key})
-    return false
+ec.callbackRespondsToKey = function(key)
+    env:print({"ec.respondsToKey ", key})
+    return key == "lua"
 end
-ec:setCallbackRespondsToKey(customRespondsToKey)
+
+ec.callbackCall = function(key, values)
+    env:print({"ec.call ", key})
+    env:print({"ec.call values "})
+    env:print(values)
+    --for value in values do
+    --    env:print({"some value"})
+    --end
+    return values
+    -- TODO return {"Z", "A"}
+end
 
 -- Add ec as Environment client.
 env:addClient(ec)
