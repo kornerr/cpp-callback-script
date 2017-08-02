@@ -7,7 +7,7 @@
 #include <cstdio>
 #include <functional>
 
-
+// Do not inherit this class. Simply provide callbacks.
 class EnvironmentClient
 {
     public:
@@ -22,9 +22,9 @@ class EnvironmentClient
         EnvironmentClient() :
             callbackRespondsToKey(nullptr),
             callbackCall(nullptr) { }
-        virtual ~EnvironmentClient() { }
+        ~EnvironmentClient() { }
 
-        virtual bool respondsToKey(const String &key)
+        bool respondsToKey(const String &key)
         {
             if (this->callbackRespondsToKey)
             {
@@ -33,7 +33,7 @@ class EnvironmentClient
             printf("EnvironmentClient.respondsToKey(%s). provide callback!\n", key.c_str());
             return false;
         }
-        virtual Strings call(const String &key, const Strings &values)
+        Strings call(const String &key, const Strings &values)
         {
             if (this->callbackCall)
             {

@@ -3,8 +3,8 @@
 #include "File.h"
 
 // CPP.
-#include "cpp/module.h"
-#include "cpp/proxy.h"
+//#include "cpp/module.h"
+//#include "cpp/proxy.h"
 
 // Chai.
 //#include <chaiscript/chaiscript.hpp>
@@ -27,26 +27,54 @@ Environment *env = 0;
     chai.eval(script);
 }*/
 
-void runCPP(Environment *env)
+void runCPP()
 {
-    Module *module = new Module;
+    // Module.
+    EnvironmentClient *module = new EnvironmentClient;
     env->addClient(module);
+    module->callbackRespondsToKey =
+        [](const String &key)
+        {
+            return (key == "module");
+        };
+    module->callbackCall =
+        [](const String &key, const Strings &values)
+        {
+            printf("Module.call(%s)\n", key.c_str());
+            return values;
+        };
+
     // Work with 'module' through Environment interface.
     {
         Strings values = env->call("module", {"1", "2"});
         printf("module. values: '%s'\n", stringsToString(values).c_str());
     }
 
-    Proxy *proxy = new Proxy(env);
+    // Proxy.
+    EnvironmentClient *proxy = new EnvironmentClient;
     env->addClient(proxy);
+    proxy->callbackRespondsToKey =
+        [](const String &key)
+        {
+            return (key == "proxy");
+        };
+    proxy->callbackCall =
+        [&](const String &key, const Strings &values)
+        {
+            printf("Proxy.call(%s)\n", key.c_str());
+            // Redirect call to 'module'.
+            return env->call("module", values);
+        };
     // Work with 'module' through 'proxy'.
     {
         Strings values = env->call("proxy", {"10", "20"});
         printf("proxy. values: '%s'\n", stringsToString(values).c_str());
     }
 
+    printf("Finished CPP\n");
+
     /*
-    // Deallocate 'model' and 'proxy'.
+    // Deallocate.
     delete module;
     delete proxy;
     */
@@ -79,12 +107,6 @@ void runSol(Environment *env, const char *fileName)
     // Register environment client class.
     lua.new_usertype<EnvironmentClient>(
         "EnvironmentClient",
-        "respondsToKey", &EnvironmentClient::respondsToKey,
-        "call",
-        [](EnvironmentClient &ec, const String &key, sol::nested<Strings> values)
-        {
-            return ec.call(key, values);
-        },
         "callbackCall", &EnvironmentClient::callbackCall,
         "callbackRespondsToKey", &EnvironmentClient::callbackRespondsToKey
     );
@@ -102,11 +124,12 @@ int main(int argc, char *argv[])
     const char *fileNameChai = argv[1];
     const char *fileNameLua = argv[2];
 
-    Environment env;
+    Environment environment;
+    env = &environment;
 
-    runCPP(&env);
+    runCPP();
     //runChai(&env, fileNameChai);
-    runSol(&env, fileNameLua);
+    runSol(env, fileNameLua);
 
     return 0;
 }
