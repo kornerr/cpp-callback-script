@@ -1,3 +1,4 @@
 
-env:call("module", {"One", "Two"})
+values = env:call("proxy", {"One", "Two"})
+env:print(values)
 

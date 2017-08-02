@@ -27,6 +27,10 @@ class Environment
             Strings stub;
             return stub;
         }
+        void print(const Strings &values)
+        {
+            printf("%s\n", stringsToString(values).c_str());
+        }
 
     private:
         std::vector<EnvironmentClient *> clients;

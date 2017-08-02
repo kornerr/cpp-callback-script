@@ -65,7 +65,16 @@ void runSol(Environment *env, const char *fileName)
     lua.new_usertype<Environment>(
         "Environment",
         "addClient", &Environment::addClient,
-        "call", &Environment::call
+        "call",
+        [](Environment &env, const String &key, sol::nested<Strings> values)
+        {
+            return env.call(key, values);
+        },
+        "print",
+        [](Environment &env, sol::nested<Strings> values)
+        {
+            env.print(values);
+        }
     );
     // Load and execute script.
     lua.script_file(fileName);
