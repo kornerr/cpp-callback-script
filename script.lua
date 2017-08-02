@@ -15,9 +15,9 @@ ec.callbackCall = function(key, values)
     env:print({"ec.call ", key})
     env:print({"ec.call values "})
     env:print(values)
-    --for value in values do
-    --    env:print({"some value"})
-    --end
+    for k, v in pairs(values) do
+        env:print({k, " -> ", v})
+    end
     return {"Z", "A"}
 end
 

@@ -86,7 +86,7 @@ void runCPP()
 void runSol(Environment *env, const char *fileName)
 {
     sol::state lua;
-
+    lua.open_libraries();
     // Register environment instance.
     lua["env"] = env;
     // Register environment class.
