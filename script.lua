@@ -18,8 +18,7 @@ ec.callbackCall = function(key, values)
     --for value in values do
     --    env:print({"some value"})
     --end
-    return values
-    -- TODO return {"Z", "A"}
+    return {"Z", "A"}
 end
 
 -- Add ec as Environment client.
