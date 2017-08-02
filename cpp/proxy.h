@@ -9,11 +9,11 @@ class Proxy : public EnvironmentClient
     public:
         Proxy(Environment *env) : environment(env) { }
 
-        virtual bool respondsToKey(const String &key)
+        bool respondsToKey(const String &key) override
         {
             return (key == "proxy");
         }
-        virtual Strings call(const String &key, const Strings &values)
+        Strings call(const String &key, const Strings &values) override
         {
             printf("Proxy.call\n");
             // Redirect call to 'module'.

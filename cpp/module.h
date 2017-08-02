@@ -9,11 +9,11 @@ class Module : public EnvironmentClient
     public:
         Module() { }
 
-        virtual bool respondsToKey(const String &key)
+        bool respondsToKey(const String &key) override
         {
             return (key == "module");
         }
-        virtual Strings call(const String &key, const Strings &values)
+        Strings call(const String &key, const Strings &values) override
         {
             printf("Module.call\n");
             return values;
