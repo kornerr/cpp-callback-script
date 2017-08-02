@@ -76,6 +76,16 @@ void runSol(Environment *env, const char *fileName)
             env.print(values);
         }
     );
+    // Register environment client class.
+    lua.new_usertype<EnvironmentClient>(
+        "EnvironmentClient",
+        "respondsToKey", &EnvironmentClient::respondsToKey,
+        "call",
+        [](EnvironmentClient &ec, const String &key, sol::nested<Strings> values)
+        {
+            return ec.call(key, values);
+        }
+    );
     // Load and execute script.
     lua.script_file(fileName);
 }

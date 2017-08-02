@@ -23,7 +23,7 @@ class Environment
                     return client->call(key, values);
                 }
             }
-            printf("No one found to respond to key '%s'", key.c_str());
+            printf("Environment. No one found to respond to key '%s'\n", key.c_str());
             Strings stub;
             return stub;
         }
