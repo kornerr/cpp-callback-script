@@ -7,11 +7,11 @@
 #include "cpp/proxy.h"
 
 // Chai.
-#include <chaiscript/chaiscript.hpp>
+//#include <chaiscript/chaiscript.hpp>
 
 Environment *env = 0;
 
-void runChai(Environment *env, const char *fileName)
+/*void runChai(Environment *env, const char *fileName)
 {
     // Create Chai engine.
     chaiscript::ChaiScript chai;
@@ -25,7 +25,7 @@ void runChai(Environment *env, const char *fileName)
     String script = readFile(fileName);
     // Execute script.
     chai.eval(script);
-}
+}*/
 
 void runCPP(Environment *env)
 {
