@@ -73,11 +73,6 @@ void runSol(const char *fileName)
         [](Environment &env, const String &key, sol::nested<Strings> values)
         {
             return env.call(key, values);
-        },
-        "print",
-        [](Environment &env, sol::nested<Strings> values)
-        {
-            env.print(values);
         }
     );
     // Register environment client class.
