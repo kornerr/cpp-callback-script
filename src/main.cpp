@@ -1,31 +1,7 @@
 
 #include "Environment.h"
-#include "File.h"
-
-// CPP.
-//#include "cpp/module.h"
-//#include "cpp/proxy.h"
-
-// Chai.
-//#include <chaiscript/chaiscript.hpp>
 
 Environment *env = 0;
-
-/*void runChai(Environment *env, const char *fileName)
-{
-    // Create Chai engine.
-    chaiscript::ChaiScript chai;
-    // Register environment type.
-    chai.add(chaiscript::fun(&Environment::addClient), "addClient");
-    chai.add(chaiscript::fun(&Environment::call), "call");
-    chai.add(chaiscript::user_type<Environment>(), "Environment");
-    // Register environment instance.
-    chai.add(chaiscript::var(env), "env");
-    // Load script.
-    String script = readFile(fileName);
-    // Execute script.
-    chai.eval(script);
-}*/
 
 void runCPP()
 {
@@ -83,7 +59,7 @@ void runCPP()
 // Sol2.
 #include <sol.hpp>
 
-void runSol(Environment *env, const char *fileName)
+void runSol(const char *fileName)
 {
     sol::state lua;
     lua.open_libraries();
@@ -108,28 +84,37 @@ void runSol(Environment *env, const char *fileName)
     lua.new_usertype<EnvironmentClient>(
         "EnvironmentClient",
         "callbackCall", &EnvironmentClient::callbackCall,
+        "callbackCallVector", &EnvironmentClient::callbackCallVector,
         "callbackRespondsToKey", &EnvironmentClient::callbackRespondsToKey
     );
+
+    // Register vector class.
+    lua.new_usertype<Vector>(
+        "Vector",
+        "strings", &Vector::strings,
+        "setStrings",
+        [](Vector &vector, sol::nested<Strings> strings)
+        {
+            return vector.setStrings(strings);
+        }
+    );
+
     // Load and execute script.
     lua.script_file(fileName);
 }
 
 int main(int argc, char *argv[])
 {
-    if (argc != 3)
+    if (argc != 2)
     {
-        printf("%s /path/to/script.chai /path/to/script.lua\n", argv[0]);
+        printf("%s /path/to/script.lua\n", argv[0]);
         return 1;
     }
-    const char *fileNameChai = argv[1];
-    const char *fileNameLua = argv[2];
+    const char *fileName = argv[1];
 
-    Environment environment;
-    env = &environment;
-
+    env = new Environment;
     runCPP();
-    //runChai(&env, fileNameChai);
-    runSol(env, fileNameLua);
+    runSol(fileName);
 
     return 0;
 }

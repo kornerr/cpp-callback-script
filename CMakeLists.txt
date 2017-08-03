@@ -1,19 +1,14 @@
-PROJECT(RESEARCH_CHAI_SCRIPT)
+PROJECT(CPP_CALLBACK_SCRIPT)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 # Use C++14.
 ADD_DEFINITIONS("-std=c++14")
 
-# CPP.
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/app)
-
-# Chai.
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/../ChaiScript/include)
-
-# Sol2.
+# Sol2 must be located in <this directory>/../sol2
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/../sol2)
 
-ADD_EXECUTABLE(cpp-callback-script main.cpp)
-
-TARGET_LINK_LIBRARIES(cpp-callback-script dl pthread lua)
+# Executable.
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src)
+ADD_EXECUTABLE(cpp-callback-script src/main.cpp)
+TARGET_LINK_LIBRARIES(cpp-callback-script lua)
 

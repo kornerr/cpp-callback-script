@@ -11,18 +11,38 @@ ec.callbackRespondsToKey = function(key)
     return key == "lua"
 end
 
-ec.callbackCall = function(key, values)
-    env:print({"ec.call ", key})
-    env:print({"ec.call values "})
-    env:print(values)
-    for k, v in pairs(values) do
-        env:print({k, " -> ", v})
+if (false) then
+    ec.callbackCall = function(key, values)
+        env:print({"ec.call ", key})
+        env:print({"ec.call values "})
+        env:print(values)
+        for k, v in pairs(values) do
+            env:print({k, " -> ", v})
+        end
+        return {"Z", "A"}
     end
-    return {"Z", "A"}
 end
+
+if (true) then
+    ec.callbackCallVector = function(key, vector)
+        env:print({"ec.call ", key})
+        env:print({"ec.call vector "})
+        env:print(vector.strings)
+        for k, v in pairs(vector.strings) do
+            env:print({k, " -> ", v})
+        end
+        v = Vector.new()
+        v:setStrings({"Z", "A"})
+        return v
+        --return {"Z", "A"}
+        --return vector
+    end
+end
+
 
 -- Add ec as Environment client.
 env:addClient(ec)
 
 -- Call upon all the clients.
-env:call("lua", {"X", "Y"})
+values = env:call("lua", {"X", "Y"})
+env:print(values)
