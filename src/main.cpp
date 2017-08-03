@@ -86,11 +86,11 @@ void runSol(const char *fileName)
     // Register vector class.
     lua.new_usertype<Vector>(
         "Vector",
-        "strings", &Vector::strings,
-        "setStrings",
-        [](Vector &vector, sol::nested<Strings> strings)
+        "values", &Vector::values,
+        "setValues",
+        [](Vector &vector, sol::nested<Strings> values)
         {
-            return vector.setStrings(strings);
+            return vector.setValues(values);
         }
     );
 

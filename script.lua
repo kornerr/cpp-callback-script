@@ -28,9 +28,9 @@ if (useStrings) then
 -- Use vector.
 else
     ec.callbackCallVector = function(key, vector)
-        printValues("callVector", vector.strings)
+        printValues("callVector", vector.values)
         v = Vector.new()
-        v:setStrings({"Z", "A"})
+        v:setValues({"Z", "A"})
         return v
     end
 end

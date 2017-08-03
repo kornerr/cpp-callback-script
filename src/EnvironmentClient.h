@@ -49,9 +49,9 @@ class EnvironmentClient
             else if (this->callbackCallVector)
             {
                 Vector in;
-                in.strings = values;
+                in.values = values;
                 Vector out = this->callbackCallVector(key, in);
-                return out.strings;
+                return out.values;
             }
             printf(
                 "EnvironmentClient.call(%s, %s). provide callback!\n",

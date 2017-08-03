@@ -10,12 +10,12 @@ struct Vector
 {
     Vector() { }
 
-    void setStrings(const Strings &strings)
+    void setValues(const Strings &values)
     {
-        this->strings = strings;
+        this->values = values;
     }
 
-    Strings strings;
+    Strings values;
 };
 
 #endif // CPP_CALLBACK_SCRIPT_VECTOR_H
