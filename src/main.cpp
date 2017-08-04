@@ -78,7 +78,19 @@ void runSol(const char *fileName)
     // Register environment client class.
     lua.new_usertype<EnvironmentClient>(
         "EnvironmentClient",
-        "callbackCall", &EnvironmentClient::callbackCall,
+        "callbackCall",
+        sol::property(
+            [](EnvironmentClient &ec, sol::function callback)
+            {
+                ec.callbackCall =
+                    [=](const String &key, const Strings &values) -> Strings
+                    {
+                        sol::nested<Strings> result = callback(key, values);
+                        return std::move(result.source);
+                    };
+            }),
+        
+        &EnvironmentClient::callbackCall,
         "callbackCallVector", &EnvironmentClient::callbackCallVector,
         "callbackRespondsToKey", &EnvironmentClient::callbackRespondsToKey
     );
