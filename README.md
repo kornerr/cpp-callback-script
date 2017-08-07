@@ -26,9 +26,10 @@ The application also has `EnvironmentClient` that serves as a callback
 container for third parties wishing to interact indirectly through `Environment`.
 
 `EnvironmentClient` has the following callbacks:
-* `callbackRespondsToKey` returns a list keys this particulare
-  `EnvironmentClient` can respond to
-* `callbackCall` returns the function to call when the supported key is provided
+* `callbackRespondsToKey` returns a list keys this particular
+  `EnvironmentClient` instance responds to
+* `callbackCall` returns a list of keys as a result of running
+  provided callback
 
 The callbacks use `std::function` to remove the need for third parties
 to inherit `EnvironmentClient` to specify custom behaviour.
