@@ -2,7 +2,7 @@
 
 `cpp-callback-script` is a sample C++ application that is extended by a Lua script.
 
-# Application structure
+# Structure
 
 The sample application provides an abstraction to separate functionality
 into several modules with the help of `Environment` and `EnvironmentClient`
