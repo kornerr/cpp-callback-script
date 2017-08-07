@@ -1,6 +1,8 @@
 
+-- Print title, type, and values.
 function printValues(title, values)
-    print(title)
+    print("----", title, "----")
+    print(values)
     for k, v in pairs(values) do
         print("", k, "->", v)
     end
@@ -8,7 +10,7 @@ end
 
 -- Call already registered modules.
 values = env:call("proxy", {"One", "Two"})
-printValues("proxy", values)
+printValues("Calling 'proxy'", values)
 
 -- Register new module that responds to 'lua' key.
 ec = EnvironmentClient.new()
@@ -22,13 +24,14 @@ useStrings = true
 -- Use strings.
 if (useStrings) then
     ec.callbackCall = function(key, values)
-        printValues("call", values)
-        return {"Z", "A"}
+        printValues("Inside normal callback", values)
+        return values
+        --return {"Z", "A"}
     end
 -- Use vector.
 else
     ec.callbackCallVector = function(key, vector)
-        printValues("callVector", vector.values)
+        printValues("Inside vector callback", vector.values)
         v = Vector.new()
         v:setValues({"Z", "A"})
         return v
@@ -40,4 +43,4 @@ env:addClient(ec)
 
 -- Call newly registered module.
 values = env:call("lua", {"X", "Y"})
-printValues("lua", values)
+printValues("Values after calling 'lua'", values)

@@ -75,22 +75,27 @@ void runSol(const char *fileName)
             return env.call(key, values);
         }
     );
+
+#define REGISTER_PLAIN_CALLBACK
+
     // Register environment client class.
     lua.new_usertype<EnvironmentClient>(
         "EnvironmentClient",
         "callbackCall",
+#ifdef REGISTER_PLAIN_CALLBACK
+        &EnvironmentClient::callbackCall,
+#else // REGISTER_PLAIN_CALLBACK
         sol::property(
-            [](EnvironmentClient &ec, sol::function callback)
+            [](EnvironmentClient &ec, sol::function luaCallback)
             {
                 ec.callbackCall =
                     [=](const String &key, const Strings &values) -> Strings
                     {
-                        sol::nested<Strings> result = callback(key, values);
+                        sol::nested<Strings> result = luaCallback(key, sol::as_table(values));
                         return std::move(result.source);
                     };
             }),
-        
-        &EnvironmentClient::callbackCall,
+#endif // REGISTER_PLAIN_CALLBACK
         "callbackCallVector", &EnvironmentClient::callbackCallVector,
         "callbackRespondsToKey", &EnvironmentClient::callbackRespondsToKey
     );
