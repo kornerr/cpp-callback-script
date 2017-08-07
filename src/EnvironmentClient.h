@@ -3,7 +3,6 @@
 #define CPP_CALLBACK_SCRIPT_ENVIRONMENT_CLIENT_H
 
 #include "Common.h"
-#include "Vector.h"
 
 #include <cstdio>
 #include <functional>
@@ -19,14 +18,9 @@ class EnvironmentClient
         typedef std::function<Strings (const String &, const Strings &)> CallbackCall;
         CallbackCall callbackCall;
 
-        // Callback for 'call' method using Vector.
-        typedef std::function<Vector (const String &, const Vector &)> CallbackCallVector;
-        CallbackCallVector callbackCallVector;
-
         EnvironmentClient() :
             callbackRespondsToKey(nullptr),
-            callbackCall(nullptr),
-            callbackCallVector(nullptr) { }
+            callbackCall(nullptr) { }
         ~EnvironmentClient() { }
 
         bool respondsToKey(const String &key)
@@ -40,18 +34,9 @@ class EnvironmentClient
         }
         Strings call(const String &key, const Strings &values)
         {
-            // Strings version.
             if (this->callbackCall)
             {
                 return this->callbackCall(key, values);
-            }
-            // Vector version.
-            else if (this->callbackCallVector)
-            {
-                Vector in;
-                in.values = values;
-                Vector out = this->callbackCallVector(key, in);
-                return out.values;
             }
             printf(
                 "EnvironmentClient.call(%s, %s). provide callback!\n",

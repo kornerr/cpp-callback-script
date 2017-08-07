@@ -76,7 +76,7 @@ void runSol(const char *fileName)
         }
     );
 
-#define REGISTER_PLAIN_CALLBACK
+//#define REGISTER_PLAIN_CALLBACK
 
     // Register environment client class.
     lua.new_usertype<EnvironmentClient>(
@@ -96,19 +96,7 @@ void runSol(const char *fileName)
                     };
             }),
 #endif // REGISTER_PLAIN_CALLBACK
-        "callbackCallVector", &EnvironmentClient::callbackCallVector,
         "callbackRespondsToKey", &EnvironmentClient::callbackRespondsToKey
-    );
-
-    // Register vector class.
-    lua.new_usertype<Vector>(
-        "Vector",
-        "values", &Vector::values,
-        "setValues",
-        [](Vector &vector, sol::nested<Strings> values)
-        {
-            return vector.setValues(values);
-        }
     );
 
     // Load and execute script.

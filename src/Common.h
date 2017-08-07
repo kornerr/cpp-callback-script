@@ -6,7 +6,6 @@
 #include <vector>
 
 typedef std::string String;
-
 typedef std::vector<String> Strings;
 
 String stringsToString(const Strings &strings)
