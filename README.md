@@ -2,6 +2,13 @@
 
 `cpp-callback-script` is a sample C++ application that is extended by a Lua script.
 
+# Dependencies
+
+To run the sample, you need to have the following libraries installed:
+
+* [Lua][lua]
+* [Sol2][sol2]
+
 # Structure
 
 The sample application provides an abstraction to separate functionality
@@ -47,3 +54,5 @@ instances that respond to different keys.
 `script.lua`, in its turn, creates an instance of `EnvironmentClient`
 that responds to a new key.
 
+[lua]: http://www.lua.org/download.html
+[sol2]: https://github.com/ThePhD/sol2
